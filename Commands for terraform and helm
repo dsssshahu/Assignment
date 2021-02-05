@@ -1,0 +1,45 @@
+sudo yum install -y yum-utils
+sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+sudo yum -y install terraform
+terraform -install-autocomplete
+
+----------------------
+After installing terraform go to the folder where terraform files are present
+
+Do
+terraform init  -- will download required things
+terraform validate  --- will validate the syntax
+terraform plan  -- will show what and all will be created
+terraform apply  -- will install the required infra
+
+
+after EKS cluster creating and terraform apply success run:
+
+aws eks --region $(terraform output -raw region) update-kubeconfig --name $(terraform output -raw cluster_name)
+
+after running this you will be able to access your kubernetes cluster.
+
+-------------------------------
+
+install helm chart by script:
+
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
+
+----------------------------
+
+Jenkins installation via helm chart
+
+https://aws.amazon.com/blogs/storage/deploying-jenkins-on-amazon-eks-with-amazon-efs/
+
+follow above doc to create PV, PVC and SC
+
+to install jenkins:
+
+helm repo add jenkins https://charts.jenkins.io
+helm install jenkins stable/jenkins --set rbac.create=true,master.servicePort=80,master.serviceType=LoadBalancer,persistence.existingClaim=efs-claim
+
+
+
+
