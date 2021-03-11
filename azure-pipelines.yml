@@ -1,4 +1,18 @@
 # Docker
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    javaHomeOption: '- task: DownloadPackage@1
+  inputs:
+    packageType: 'maven'
+    definition: 
+    downloadPath: '$(System.ArtifactsDirectory)''
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: false
 # Build a Docker image
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
